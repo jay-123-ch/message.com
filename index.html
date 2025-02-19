@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Messenger</title>
+    <style>
+        /* CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .messenger-box {
+            width: 400px;
+            height: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1877f2;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .chat-area {
+            height: 450px;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            max-width: 80%;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .sent {
+            background: #1877f2;
+            color: white;
+            margin-left: auto;
+        }
+
+        .received {
+            background: #e4e6eb;
+            color: black;
+        }
+
+        .timestamp {
+            font-size: 0.75rem;
+            color: #65676b;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .input-box {
+            padding: 15px;
+            background: white;
+            display: flex;
+            gap: 10px;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        #sendBtn {
+            padding: 12px 25px;
+            background: #1877f2;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #sendBtn:hover {
+            background: #166fe5;
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML -->
+    <div class="messenger-box">
+        <div class="header">
+            <h2>Pro Messenger</h2>
+            <p>Fast & Secure Communication</p>
+        </div>
+        
+        <div class="chat-area" id="chatArea"></div>
+        
+        <div class="input-box">
+            <input type="text" id="messageInput" placeholder="Type your message...">
+            <button id="sendBtn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript
+        const chatArea = document.getElementById('chatArea');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        // Message template
+        function createMessage(text, isSent) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isSent ? 'sent' : 'received'}`;
+            
+            const time = new Date().toLocaleTimeString([], { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+
+            messageDiv.innerHTML = `
+                ${text}
+                <span class="timestamp">${time}</span>
+            `;
+            
+            return messageDiv;
+        }
+
+        // Send message
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message === '') return;
+
+            // Add sent message
+            chatArea.appendChild(createMessage(message, true));
+            
+            // Simulate received response (Replace with actual backend)
+            setTimeout(() => {
+                chatArea.appendChild(createMessage('Thanks for your message!', false));
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }, 1000);
+
+            // Clear input
+            messageInput.value = '';
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        // Event listeners
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
